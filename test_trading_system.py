@@ -17,8 +17,8 @@ STR_NEMO = 'nemo'
 DRIVERS = [STR_KIWER, STR_NEMO]
 PRICE_TABLE = [
     list(range(5000, 5901, 36)) + list(range(5900 - 36, 5000, -36)) + list(range(5000 + 36, 5901, 36)),
-    list(range(5000, 5451, 18)) + [5450]*23 + list(range(5450, 5901, 18)),
-    list(range(5900, 5450, -18)) + [5450]*25 + list(range(5450, 5000, -18))
+    list(range(5000, 5451, 18)) + [5450] * 23 + list(range(5450, 5901, 18)),
+    list(range(5900, 5450, -18)) + [5450] * 25 + list(range(5450, 5000, -18))
 ]
 EXPECTED_TABLE = tuple(tuple(row) for row in PRICE_TABLE)
 
@@ -41,12 +41,12 @@ class MyTestCase(unittest.TestCase):
         self.mk_nemo_api.selling_stock.side_effect = lambda stock_code, price, count: print(
             '[NEMO]' + stock_code + ' sell stock ( price : ' + str(price) + ' ) * ( count : ' + str(count) + ')')
 
-        self.drivers = {STR_KIWER: KiwerDriver(API=self.mk_kiwer_api), STR_NEMO: NemoDriver(API=self.mk_nemo_api),}
+        self.drivers = {STR_KIWER: KiwerDriver(API=self.mk_kiwer_api), STR_NEMO: NemoDriver(API=self.mk_nemo_api), }
         self.auto_trading = AutoTradingSystem()
-        a = []
-        for _ in range(10):
-            a.append(self.mk_kiwer_api.current_price(100))
-            a.append(self.mk_nemo_api.get_market_price(100))
+        # a = []
+        # for _ in range(10):
+        #     a.append(self.mk_kiwer_api.current_price(100))
+        #     a.append(self.mk_nemo_api.get_market_price(100))
         pass
 
     def test_success_select_stock_broker(self):
@@ -91,14 +91,14 @@ class MyTestCase(unittest.TestCase):
 
         for idx in range(10):
             with self.subTest('sub_test_' + str(idx)):
-                self.assertEqual(EXPECTED_TABLE[0][idx], self.auto_trading.get_price(STOCK_CODE))
-        self.assertEqual(1, self.mk_kiwer_api.login.call_count())
-        self.assertEqual(10, self.mk_kiwer_api.current_price.call_count())
+                self.assertEqual(EXPECTED_TABLE[0][idx], self.auto_trading.current_price(STOCK_CODE))
+        self.assertEqual(1, self.mk_kiwer_api.login.call_count)
+        self.assertEqual(10, self.mk_kiwer_api.current_price.call_count)
 
     def test_get_price_with_nemo(self):
         self.auto_trading.select_stock_broker(self.drivers[STR_NEMO])
-        self.auto_trading.cerification(TEST_ID, TEST_PW)
-        self.mk_nemo_api.get_market_price.side_effect = lambda x, y: PRICE_TABLE[0].pop(0)
+        self.auto_trading.login(TEST_ID, TEST_PW)
+        self.mk_nemo_api.get_price.side_effect = lambda x, y: PRICE_TABLE[0].pop(0)
 
         for idx in range(10):
             with self.subTest('sub_test_' + str(idx)):
