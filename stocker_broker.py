@@ -49,3 +49,9 @@ class NemoDriver(StockerBrokerDriverInterface):
 
     def current_price(self, stock_code):
         return self.api.get_market_price(stock_code)
+
+    def buy(self, stock_code, count, price):
+        pass
+
+    def sell(self, stock_code, count, price):
+        pass
