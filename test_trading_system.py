@@ -98,13 +98,13 @@ class MyTestCase(unittest.TestCase):
     def test_get_price_with_nemo(self):
         self.auto_trading.select_stock_broker(self.drivers[STR_NEMO])
         self.auto_trading.login(TEST_ID, TEST_PW)
-        self.mk_nemo_api.get_price.side_effect = lambda x, y: PRICE_TABLE[0].pop(0)
+        self.mk_nemo_api.get_market_price.side_effect = lambda x: PRICE_TABLE[0].pop(0)
 
         for idx in range(10):
             with self.subTest('sub_test_' + str(idx)):
-                self.assertEqual(EXPECTED_TABLE[0][idx], self.auto_trading.get_price(STOCK_CODE))
-        self.assertEqual(1, self.mk_nemo_api.cerification.call_count())
-        self.assertEqual(10, self.mk_nemo_api.get_market_price.call_count())
+                self.assertEqual(EXPECTED_TABLE[0][idx], self.auto_trading.current_price(STOCK_CODE))
+        self.assertEqual(1, self.mk_nemo_api.cerification.call_count)
+        self.assertEqual(10, self.mk_nemo_api.get_market_price.call_count)
 
 
 if __name__ == '__main__':

@@ -26,7 +26,7 @@ class KiwerDriver(StockerBrokerDriverInterface):
 
 class NemoDriver(StockerBrokerDriverInterface):
     def login(self, id, password):
-        pass
+        self.api.cerification(id, password)
 
     def current_price(self, stock_code):
-        pass
+        return self.api.get_market_price(stock_code)
