@@ -41,8 +41,8 @@ class MyTestCase(unittest.TestCase):
         self.mk_nemo_api.selling_stock.side_effect = lambda stock_code, price, count: print(
             '[NEMO]' + stock_code + ' sell stock ( price : ' + str(price) + ' ) * ( count : ' + str(count) + ')')
 
-        # self.drivers = {STR_KIWER: KiwerDriver(API=self.mk_kiwer_api), STR_NEMO: NemoDriver(API=self.mk_nemo_api),}
-        # self.auto_trading = AutoTradingSystem()
+        self.drivers = {STR_KIWER: KiwerDriver(API=self.mk_kiwer_api), STR_NEMO: NemoDriver(API=self.mk_nemo_api),}
+        self.auto_trading = AutoTradingSystem()
         a = []
         for _ in range(10):
             a.append(self.mk_kiwer_api.current_price(100))
