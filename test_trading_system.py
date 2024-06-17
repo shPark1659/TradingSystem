@@ -20,8 +20,8 @@ class MyTestCase(unittest.TestCase):
         self.mk_nemo_api.purchasing_stock.side_effect = lambda stock_code, price, count: print('[NEMO]' + stock_code + ' buy stock ( price : ' + str(price) + ' ) * ( count : ' + str(count) + ')')
         self.mk_nemo_api.selling_stock.side_effect = lambda stock_code,  price, count: print('[NEMO]' + stock_code + ' sell stock ( price : ' + str(price) + ' ) * ( count : ' + str(count) + ')')
 
-        self.kiwer_driver = KiwerDriver(API=self.mk_kiwer_api)
-        self.nemo_driver = KiwerDriver(API=self.mk_nemo_api)
+        self.kiwer_driver = KiwerDriver(api=self.mk_kiwer_api)
+        self.nemo_driver = KiwerDriver(api=self.mk_nemo_api)
 
     def test_success_select_stock_broker(self):
         drivers = {'키워': self.kiwer_driver, '네모': self.nemo_driver}

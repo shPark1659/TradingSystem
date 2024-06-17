@@ -18,9 +18,9 @@ class StockerBrokerDriverInterface(ABC):
 
 
 class KiwerDriver(StockerBrokerDriverInterface):
-    def __init__(self, API):
+    def __init__(self, api):
         super().__init__()
-        self._kiwer_api = API
+        self._kiwer_api = api
 
     def login(self, id, password):
         self._kiwer_api.login(id, password)
