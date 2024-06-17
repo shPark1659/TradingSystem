@@ -21,7 +21,7 @@ class MyTestCase(unittest.TestCase):
         self.mk_nemo_api.selling_stock.side_effect = lambda stock_code,  price, count: print('[NEMO]' + stock_code + ' sell stock ( price : ' + str(price) + ' ) * ( count : ' + str(count) + ')')
 
         self.kiwer_driver = KiwerDriver(API=self.mk_kiwer_api)
-        self.nemo_driver = KiwerDriver(API=self.mk_nemo_api)
+        self.nemo_driver = NemoDriver(API=self.mk_nemo_api)
 
     def test_success_select_stock_broker(self):
         drivers = {'키워': self.kiwer_driver, '네모': self.nemo_driver}
@@ -56,9 +56,9 @@ class MyTestCase(unittest.TestCase):
         self.auto_trading.buy('ABC', 100, 5)
         self.auto_trading.sell('ABC', 110, 5)
 
-        self.assertEqual(1, self.mk_nemo_api.cerification.call_count())
-        self.assertEqual(1, self.mk_nemo_api.purchasing_stock.call_count())
-        self.assertEqual(1, self.mk_nemo_api.selling_stock.call_count())
+        self.assertEqual(1, self.mk_nemo_api.cerification.call_count)
+        self.assertEqual(1, self.mk_nemo_api.purchasing_stock.call_count)
+        self.assertEqual(1, self.mk_nemo_api.selling_stock.call_count)
 
 
 if __name__ == '__main__':
