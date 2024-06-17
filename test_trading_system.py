@@ -20,8 +20,8 @@ class MyTestCase(unittest.TestCase):
         self.mk_nemo_api.purchasing_stock.side_effect = lambda stock_code, price, count: print('[NEMO]' + stock_code + ' buy stock ( price : ' + str(price) + ' ) * ( count : ' + str(count) + ')')
         self.mk_nemo_api.selling_stock.side_effect = lambda stock_code,  price, count: print('[NEMO]' + stock_code + ' sell stock ( price : ' + str(price) + ' ) * ( count : ' + str(count) + ')')
 
-        self.kiwer_driver = KiwerDriver(API=self.mk_kiwer_api)
-        self.nemo_driver = KiwerDriver(API=self.mk_nemo_api)
+        self.kiwer_driver = KiwerDriver(api=self.mk_kiwer_api)
+        self.nemo_driver = NemoDriver(api=self.mk_nemo_api)
 
     def test_success_select_stock_broker(self):
         drivers = {'키워': self.kiwer_driver, '네모': self.nemo_driver}
@@ -30,13 +30,13 @@ class MyTestCase(unittest.TestCase):
             with self.subTest('sub_test_' + key):
                 self.auto_trading.select_stock_broker(values)
                 if key == '키워':
-                    self.assertIsTrue(isinstance(self.auto_trading.stock_broker_driver, KiwerDriver))
+                    self.assertTrue(isinstance(self.auto_trading.stock_broker_driver, KiwerDriver))
                 elif key == '네모':
-                    self.assertIsTrue(isinstance(self.auto_trading.stock_broker_driver, NemoDriver))
+                    self.assertTrue(isinstance(self.auto_trading.stock_broker_driver, NemoDriver))
 
     def test_fail_select_stock_broker(self):
         with self.assertRaises(Exception):
-            self.select_stock_broker('Noname')
+            self.auto_trading.select_stock_broker('Noname')
 
     def test_buy_sell_with_kiwer(self):
         self.auto_trading.select_stock_broker(self.kiwer_driver)
