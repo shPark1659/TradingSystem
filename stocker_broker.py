@@ -26,18 +26,14 @@ class StockerBrokerDriverInterface(ABC):
 
 
 class KiwerDriver(StockerBrokerDriverInterface):
-    def __init__(self, api):
-        super().__init__(api)
-        self._kiwer_api = api
-
     def login(self, id, password):
-        self._kiwer_api.login(id, password)
+        self.api.login(id, password)
 
     def buy(self, stock_code, count, price):
-        self._kiwer_api.buy(stock_code, count, price)
+        self.api.buy(stock_code, count, price)
 
     def sell(self, stock_code, count, price):
-        self._kiwer_api.sell(stock_code, count, price)
+        self.api.sell(stock_code, count, price)
 
     def current_price(self, stock_code):
         return self.api.current_price(stock_code)
@@ -50,8 +46,8 @@ class NemoDriver(StockerBrokerDriverInterface):
     def current_price(self, stock_code):
         return self.api.get_market_price(stock_code)
 
-    def buy(self, stock_code, count, price):
-        pass
+    def buy(self, stock_code, price, count):
+        self.api.purchasing_stock(stock_code, price, count)
 
-    def sell(self, stock_code, count, price):
-        pass
+    def sell(self, stock_code, price, count):
+        self.api.selling_stock(stock_code, price, count)
