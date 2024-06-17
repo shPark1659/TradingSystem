@@ -41,7 +41,7 @@ class MyTestCase(unittest.TestCase):
         self.mk_nemo_api.selling_stock.side_effect = lambda stock_code, price, count: print(
             '[NEMO]' + stock_code + ' sell stock ( price : ' + str(price) + ' ) * ( count : ' + str(count) + ')')
 
-        self.drivers = {STR_KIWER: KiwerDriver(API=self.mk_kiwer_api), STR_NEMO: NemoDriver(API=self.mk_nemo_api), }
+        self.drivers = {STR_KIWER: KiwerDriver(api=self.mk_kiwer_api), STR_NEMO: NemoDriver(api=self.mk_nemo_api), }
         self.auto_trading = AutoTradingSystem()
         # a = []
         # for _ in range(10):
@@ -53,14 +53,15 @@ class MyTestCase(unittest.TestCase):
         for key, values in self.drivers.items():
             with self.subTest('sub_test_' + key):
                 self.auto_trading.select_stock_broker(values)
+
                 if key == STR_KIWER:
-                    self.assertIsTrue(isinstance(self.auto_trading.stock_broker_driver, KiwerDriver))
+                    self.assertTrue(isinstance(self.auto_trading.stock_broker_driver, KiwerDriver))
                 elif key == STR_NEMO:
-                    self.assertIsTrue(isinstance(self.auto_trading.stock_broker_driver, NemoDriver))
+                    self.assertTrue(isinstance(self.auto_trading.stock_broker_driver, NemoDriver))
 
     def test_fail_select_stock_broker(self):
         with self.assertRaises(Exception):
-            self.select_stock_broker('Noname')
+            self.auto_trading.select_stock_broker('Noname')
 
     def test_buy_sell_with_kiwer(self):
         self.auto_trading.select_stock_broker(self.drivers[STR_KIWER])
@@ -69,9 +70,9 @@ class MyTestCase(unittest.TestCase):
         self.auto_trading.buy(STOCK_CODE, STOCK_COUNT, AVG_STOCK_PRICE)
         self.auto_trading.sell(STOCK_CODE, STOCK_COUNT, AVG_STOCK_PRICE)
 
-        self.assertEqual(1, self.mk_kiwer_api.login.call_count())
-        self.assertEqual(1, self.mk_kiwer_api.buy.call_count())
-        self.assertEqual(1, self.mk_kiwer_api.sell.call_count())
+        self.assertEqual(1, self.mk_kiwer_api.login.call_count)
+        self.assertEqual(1, self.mk_kiwer_api.buy.call_count)
+        self.assertEqual(1, self.mk_kiwer_api.sell.call_count)
 
     def test_buy_sell_with_nemo(self):
         self.auto_trading.select_stock_broker(self.drivers[STR_NEMO])

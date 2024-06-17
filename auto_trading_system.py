@@ -2,11 +2,26 @@ from stocker_broker import StockerBrokerDriverInterface
 
 
 class AutoTradingSystem:
-    def select_stock_broker(self, stock_broker: StockerBrokerDriverInterface):
-        self.__driver = stock_broker
+    def __init__(self):
+        self._driver = None
 
-    def login(self, id, password):
-        return self.__driver.login(id, password)
+    def login(self, id, pw):
+        self._driver.login(id, pw)
+
+    def buy(self, stock_code, count, price):
+        self._driver.buy(stock_code, count, price)
+
+    def sell(self, stock_code, count, price):
+        self._driver.sell(stock_code, count, price)
+
+    @property
+    def stock_broker_driver(self):
+        return self._driver
+
+    def select_stock_broker(self, driver: StockerBrokerDriverInterface):
+        if not isinstance(driver, StockerBrokerDriverInterface):
+            raise Exception
+        self._driver = driver
 
     def current_price(self, stock_code):
-        return self.__driver.current_price(stock_code)
+        return self._driver.current_price(stock_code)
