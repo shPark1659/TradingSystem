@@ -1,4 +1,3 @@
-
 from stocker_broker import StockerBrokerDriverInterface
 
 
@@ -51,3 +50,5 @@ class AutoTradingSystem:
             raise Exception
         self._driver = driver
 
+    def get_price(self, stock_code):
+        return self._driver.current_price(stock_code)
