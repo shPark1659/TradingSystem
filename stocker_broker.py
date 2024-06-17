@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-from kiwer_api import KiwerAPI
 from nemo_api import NemoAPI
 
 
@@ -26,6 +25,8 @@ class StockerBrokerDriverInterface(ABC):
 
 
 class KiwerDriver(StockerBrokerDriverInterface):
+    def __init__(self, api):
+        super().__init__(api)
     def login(self, id, password):
         self.api.login(id, password)
 
