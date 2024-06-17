@@ -1,12 +1,27 @@
+
+from stocker_broker import StockerBrokerDriverInterface
+
+
 class AutoTradingSystem:
-    def select_stock_broker(self, driver):
-        self.broker = driver
+    def __init__(self):
+        self._driver = None
 
-    def login(self, param, param1):
-        self.broker.login(param, param1)
+    def login(self, id, pw):
+        self._driver.login(id, pw)
 
-    def buy(self, param, param1, param2):
-        self.broker.buy(param, param1, param2)
+    def buy(self, stock_code, count, price):
+        self._driver.buy(stock_code, count, price)
 
-    def sell(self, param, param1, param2):
-        self.broker.sell(param, param1, param2)
+    def sell(self, stock_code, count, price):
+        self._driver.sell(stock_code, count, price)
+
+
+    @property
+    def stock_broker_driver(self):
+        return self._driver
+
+    def select_stock_broker(self, driver: StockerBrokerDriverInterface):
+        if not isinstance(driver, StockerBrokerDriverInterface):
+            raise Exception
+        self._driver = driver
+
