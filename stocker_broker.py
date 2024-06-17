@@ -5,9 +5,12 @@ from nemo_api import NemoAPI
 
 
 class StockerBrokerDriverInterface(ABC):
+    def __init__(self, api):
+        self.api = api
+
     @abstractmethod
     def login(self, id, password):
-        pass
+        raise NotImplementedError("need to implement")
 
     @abstractmethod
     def buy(self, stock_code, count, price):
@@ -17,10 +20,14 @@ class StockerBrokerDriverInterface(ABC):
     def sell(self, stock_code, count, price):
         pass
 
+    @abstractmethod
+    def current_price(self, stock_code):
+        raise NotImplementedError("need to implement")
+
 
 class KiwerDriver(StockerBrokerDriverInterface):
     def __init__(self, api):
-        super().__init__()
+        super().__init__(api)
         self._kiwer_api = api
 
     def login(self, id, password):
@@ -32,14 +39,16 @@ class KiwerDriver(StockerBrokerDriverInterface):
     def sell(self, stock_code, count, price):
         self._kiwer_api.sell(stock_code, count, price)
 
+    def current_price(self, stock_code):
+        return self.api.current_price(stock_code)
+
 
 class NemoDriver(StockerBrokerDriverInterface):
-    def __init__(self, api: NemoAPI):
-        super().__init__()
-        self.api = api
-
     def login(self, id, password):
-        pass
+        self.api.cerification(id, password)
+
+    def current_price(self, stock_code):
+        return self.api.get_market_price(stock_code)
 
     def buy(self, stock_code, count, price):
         pass

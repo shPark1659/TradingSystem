@@ -1,4 +1,3 @@
-
 from stocker_broker import StockerBrokerDriverInterface
 
 
@@ -15,7 +14,6 @@ class AutoTradingSystem:
     def sell(self, stock_code, count, price):
         self._driver.sell(stock_code, count, price)
 
-
     @property
     def stock_broker_driver(self):
         return self._driver
@@ -25,3 +23,5 @@ class AutoTradingSystem:
             raise Exception
         self._driver = driver
 
+    def current_price(self, stock_code):
+        return self._driver.current_price(stock_code)
